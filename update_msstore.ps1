@@ -19,3 +19,6 @@ Get-CimInstance -Namespace "Root\cimv2\mdm\dmmap" -ClassName "MDM_EnterpriseMode
 
 # restore old value for the policy
 if ($oldValue-in (0,1)) { set-itemProperty HKLM:\SOFTWARE\Policies\Microsoft\Windowsstore -Name RequirePrivateStoreOnly -Value $oldValue -Type DWord }
+
+# kill storeprocess 
+Stop-Process -Name winstore.app
