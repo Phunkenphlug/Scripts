@@ -4,11 +4,14 @@ $oldValue = (get-itemProperty HKLM:\SOFTWARE\Policies\Microsoft\Windowsstore -Na
 # enable store if prohibited
 if ($oldValue -in (0,1)) { set-itemProperty HKLM:\SOFTWARE\Policies\Microsoft\Windowsstore -Name RequirePrivateStoreOnly -Value 0 -Type DWord }
 
-# open store on downloadpage
-start ms-windows-store://downloadsandupdates
+# kill storeprocess 
+stop-process "winstore.app"
 
 # reset Store and download again
 wsreset.exe -i
+
+# open store on downloadpage
+start ms-windows-store://downloadsandupdates
 
 # trigger updates of the store apps
 Get-CimInstance -Namespace "Root\cimv2\mdm\dmmap" -ClassName "MDM_EnterpriseModernAppManagement_AppManagement01" | Invoke-CimMethod -MethodName UpdateScanMethod
