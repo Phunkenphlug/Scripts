@@ -1,11 +1,12 @@
 # Remember old value if store is blocked i.e. by gpo
 $oldValue = (get-itemProperty HKLM:\SOFTWARE\Policies\Microsoft\Windowsstore -Name requirePrivateStoreOnly).requirePrivateStoreOnly
+$oldValue = 1 # testing
 
 # enable store if prohibited
 if ($oldValue -in (0,1)) { set-itemProperty HKLM:\SOFTWARE\Policies\Microsoft\Windowsstore -Name RequirePrivateStoreOnly -Value 0 -Type DWord }
 
 # kill storeprocess 
-stop-process "winstore.app"
+Stop-Process -Name winstore.app
 
 # reset Store and download again
 wsreset.exe -i
